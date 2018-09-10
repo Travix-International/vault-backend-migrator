@@ -4,10 +4,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/adamdecaf/vault-backend-migrator/vault"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+
+	"github.com/adamdecaf/vault-backend-migrator/vault"
 )
 
 func Import(path, file string) error {
@@ -49,12 +50,15 @@ func Import(path, file string) error {
 
 	// Write each keypair to vault
 	for _, item := range wrap.Data {
-		data := make(map[string]string)
+		data := make(map[string]interface{})
 		for _, kv := range item.Pairs {
 			data[kv.Key] = kv.Value
 		}
 		fmt.Printf("Writing %s\n", item.Path)
-		v.Write(item.Path, data)
+		err := v.Write(item.Path, data)
+		if err != nil {
+			fmt.Printf("Error: %s\n", err.Error())
+		}
 	}
 
 	return nil

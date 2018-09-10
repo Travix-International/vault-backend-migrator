@@ -3,8 +3,9 @@ package vault
 import (
 	"encoding/base64"
 	"fmt"
-	"github.com/hashicorp/vault/api"
 	"os"
+
+	"github.com/hashicorp/vault/api"
 )
 
 type Vault struct {
@@ -61,8 +62,8 @@ func (v *Vault) List(path string) []string {
 
 // Read accepts a vault path to read the data out of. It will return a map
 // of base64 encoded values.
-func (v *Vault) Read(path string) map[string]string {
-	out := make(map[string]string)
+func (v *Vault) Read(path string) map[string]interface{} {
+	out := make(map[string]interface{})
 
 	s, err := v.c.Logical().Read(path)
 	if err != nil {
@@ -76,27 +77,33 @@ func (v *Vault) Read(path string) map[string]string {
 	}
 	for k, v := range s.Data {
 		r, ok := v.(string)
-		if !ok {
-			fmt.Printf("error reading value at %s, key=%s\n", path, k)
+		if ok {
+			e := base64.StdEncoding.EncodeToString([]byte(r))
+			out[k] = e
+		} else {
+			out[k] = v
 		}
-		e := base64.StdEncoding.EncodeToString([]byte(r))
-		out[k] = e
 	}
 
 	return out
 }
 
 // Write takes in a vault path and base64 encoded data to be written at that path.
-func (v *Vault) Write(path string, data map[string]string) error {
+func (v *Vault) Write(path string, data map[string]interface{}) error {
 	body := make(map[string]interface{})
 
 	// Decode the base64 values
 	for k, v := range data {
-		b, err := base64.StdEncoding.DecodeString(v)
-		if err != nil {
-			return err
+		stringv, ok := v.(string)
+		if ok {
+			b, err := base64.StdEncoding.DecodeString(stringv)
+			if err != nil {
+				return err
+			}
+			body[k] = string(b)
+		} else {
+			body[k] = v
 		}
-		body[k] = string(b)
 	}
 
 	secret, err := v.c.Logical().Write(path, body)
