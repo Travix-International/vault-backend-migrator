@@ -8,7 +8,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/adamdecaf/vault-backend-migrator/vault"
+	"github.com/msharbaji/vault-backend-migrator/vault"
 )
 
 func Import(path, file string) error {

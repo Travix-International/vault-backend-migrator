@@ -84,7 +84,6 @@ func (v *Vault) Read(path string) map[string]interface{} {
 			out[k] = v
 		}
 	}
-
 	return out
 }
 

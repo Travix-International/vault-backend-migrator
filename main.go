@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/adamdecaf/vault-backend-migrator/cmd"
+	"github.com/msharbaji/vault-backend-migrator/cmd"
 	"os"
 	"strings"
 )
