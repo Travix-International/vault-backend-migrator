@@ -14,7 +14,7 @@ docker run -it \
 -e VAULT_ADDR=<Vault-URL:Vault-Port> \
 -e VAULT_CACERT=<full filepath to .crt bundle> \
 -e VAULT_TOKEN=<Vault token> \
-travix\vault-backend-migrator -export secret/ -file /bck/secrets.json
+travix/vault-backend-migrator -export secret/ -file /bck/secrets.json
 ```
 
 Note: You'll need to make sure the VAULT_TOKEN has permissions to list and read all vault paths.
@@ -32,7 +32,7 @@ docker run -it \
 -e VAULT_ADDR=<Vault-URL:Vault-Port> \
 -e VAULT_CACERT=<full filepath to .crt bundle> \
 -e VAULT_TOKEN=<Vault token> \
-vault-backend-migrator -import secret/ -file /bck/secrets.json
+travix/vault-backend-migrator -import secret/ -file /bck/secrets.json
 ```
 
 This will output each key the tool is writing to. After that a simple `vault list` command off the vault cli will show the secrets there.
