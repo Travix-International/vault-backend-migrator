@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/msharbaji/vault-backend-migrator/vault"
+	"github.com/Travix-International/vault-backend-migrator/vault"
 	"io/ioutil"
 	"os"
 	"path"
