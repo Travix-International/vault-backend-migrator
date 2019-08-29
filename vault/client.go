@@ -110,7 +110,7 @@ func (v *Vault) Write(path string, data map[string]interface{}) error {
 		return err
 	}
 	if secret == nil {
-		return fmt.Errorf("No secret returned when writing to %s", path)
+		return nil
 	}
 	return nil
 }

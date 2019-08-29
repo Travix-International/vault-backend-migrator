@@ -85,11 +85,13 @@ func Export(path, file string) error {
 
 func accumulate(acc *[]string, v vault.Vault, p string) {
 	res := v.List(p)
-	if res == nil { // We ran into a leaf
-		*acc = append(*acc, p)
-		return
-	}
 	for _, k := range res {
-		accumulate(acc, v, path.Join(p, k))
+		lastChar := string(k[len(k) - 1])
+		if lastChar != "/"{
+			*acc = append(*acc, path.Join(p, k))
+			fmt.Println(path.Join(p, k))
+		} else {
+			accumulate(acc, v, path.Join(p, k))
+		}
 	}
 }
